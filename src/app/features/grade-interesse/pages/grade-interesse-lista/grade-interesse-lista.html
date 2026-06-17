@@ -1,0 +1,30 @@
+<section>
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Grade de Interesse</h1>
+      <p class="page-lead">Total de itens: {{ disciplinas.length }}</p>
+    </div>
+    <a class="button" routerLink="/disciplinas">Ver disciplinas</a>
+  </div>
+
+  @if (disciplinas.length) {
+    <div class="grid">
+      @for (disciplina of disciplinas; track disciplina.id) {
+        <article class="panel item">
+          <div>
+            <h2>{{ disciplina.nome }}</h2>
+            <p>{{ disciplina.descricao }}</p>
+            <p class="meta">
+              {{ disciplina.cargaHoraria }}h | {{ disciplina.periodo }} | {{ disciplina.categoria }}
+            </p>
+          </div>
+          <button class="button secondary" type="button" (click)="removerDaGrade(disciplina)">
+            Remover disciplina da grade
+          </button>
+        </article>
+      }
+    </div>
+  } @else {
+    <p class="empty-state">Nenhuma disciplina adicionada à grade de interesse.</p>
+  }
+</section>

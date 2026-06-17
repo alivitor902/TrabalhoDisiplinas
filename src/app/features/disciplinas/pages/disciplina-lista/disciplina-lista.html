@@ -1,0 +1,58 @@
+<section>
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Disciplinas</h1>
+      <p class="page-lead">Total de disciplinas: {{ disciplinasFiltradas.length }}</p>
+    </div>
+    <a class="button" routerLink="/disciplinas/novo">Cadastrar nova disciplina</a>
+  </div>
+
+  <form class="filters panel">
+    <label>
+      Busca textual
+      <input
+        name="busca"
+        type="search"
+        [(ngModel)]="busca"
+        placeholder="Nome, professor, período ou categoria"
+      />
+    </label>
+
+    <label>
+      Período
+      <select name="periodo" [(ngModel)]="filtroPeriodo">
+        <option value="">Todos</option>
+        @for (periodo of periodos; track periodo) {
+          <option [value]="periodo">{{ periodo }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Categoria
+      <select name="categoria" [(ngModel)]="filtroCategoria">
+        <option value="">Todas</option>
+        @for (categoria of categorias; track categoria) {
+          <option [value]="categoria">{{ categoria }}</option>
+        }
+      </select>
+    </label>
+
+    <button class="button secondary" type="button" (click)="limparFiltros()">Limpar filtros</button>
+  </form>
+
+  @if (disciplinasFiltradas.length) {
+    <div class="grid">
+      @for (disciplina of disciplinasFiltradas; track disciplina.id) {
+        <app-disciplina-card
+          [disciplina]="disciplina"
+          (adicionarNaGrade)="adicionarNaGrade($event)"
+          (removerDaGrade)="removerDaGrade($event)"
+          (excluir)="excluir($event)"
+        />
+      }
+    </div>
+  } @else {
+    <p class="empty-state">Nenhuma disciplina cadastrada.</p>
+  }
+</section>

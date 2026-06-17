@@ -1,0 +1,16 @@
+.sobre-lista {
+  display: grid;
+  gap: 18px;
+  margin: 20px 0 0;
+}
+
+dt {
+  color: #64748b;
+  font-weight: 800;
+}
+
+dd {
+  margin: 6px 0 0;
+  color: #1f2937;
+  line-height: 1.6;
+}

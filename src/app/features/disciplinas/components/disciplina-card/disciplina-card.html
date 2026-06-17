@@ -1,0 +1,40 @@
+<article class="card" [appDestaqueGrade]="disciplina.adicionadaNaGrade">
+  <div class="card-header">
+    <div>
+      <h2>{{ disciplina.nome }}</h2>
+      <p>{{ disciplina.descricao }}</p>
+    </div>
+    <span class="status">{{ disciplina.adicionadaNaGrade | statusGrade }}</span>
+  </div>
+
+  <dl class="details">
+    <div>
+      <dt>Carga horária</dt>
+      <dd>{{ disciplina.cargaHoraria }}h</dd>
+    </div>
+    <div>
+      <dt>Professor</dt>
+      <dd>{{ disciplina.professor }}</dd>
+    </div>
+    <div>
+      <dt>Período</dt>
+      <dd>{{ disciplina.periodo }}</dd>
+    </div>
+    <div>
+      <dt>Categoria</dt>
+      <dd>{{ disciplina.categoria }}</dd>
+    </div>
+  </dl>
+
+  <div class="actions">
+    @if (!disciplina.adicionadaNaGrade) {
+      <button class="button" type="button" (click)="adicionarNaGrade.emit(disciplina)">Adicionar à grade</button>
+    } @else {
+      <button class="button secondary" type="button" (click)="removerDaGrade.emit(disciplina)">Remover da grade</button>
+    }
+
+    <a class="button secondary" [routerLink]="['/disciplinas/detalhes', disciplina.id]">Ver detalhes</a>
+    <a class="button secondary" [routerLink]="['/disciplinas/editar', disciplina.id]">Editar</a>
+    <button class="button danger" type="button" (click)="excluir.emit(disciplina)">Excluir</button>
+  </div>
+</article>

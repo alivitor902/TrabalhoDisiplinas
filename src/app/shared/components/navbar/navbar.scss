@@ -1,0 +1,37 @@
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px clamp(16px, 4vw, 48px);
+  border-bottom: 1px solid #dbe3ef;
+  background: #ffffff;
+}
+
+.brand {
+  color: #111827;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.links a {
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #334155;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.links a.active,
+.links a:hover {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
