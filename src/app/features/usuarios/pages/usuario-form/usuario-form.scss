@@ -1,0 +1,42 @@
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: #475569;
+  font-weight: 700;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.checkbox input {
+  width: auto;
+}
+
+span,
+.alert {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.alert {
+  padding: 14px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fef2f2;
+}

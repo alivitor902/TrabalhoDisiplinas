@@ -1,0 +1,70 @@
+<section class="panel">
+  <h1 class="page-title">{{ titulo }}</h1>
+  <p class="page-lead">Preencha os dados do usuário.</p>
+
+  @if (erro) {
+    <p class="alert">{{ erro }}</p>
+  }
+
+  @if (carregando) {
+    <p class="empty-state">Carregando usuário...</p>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="salvar()" class="form">
+    <label>
+      Nome
+      <input type="text" formControlName="nome" />
+      @if (form.controls.nome.hasError('required') && form.controls.nome.touched) {
+        <span>Nome obrigatório.</span>
+      }
+      @if (form.controls.nome.hasError('minlength') && form.controls.nome.touched) {
+        <span>Nome deve ter no mínimo 3 caracteres.</span>
+      }
+    </label>
+
+    <label>
+      Email
+      <input type="email" formControlName="email" />
+      @if (form.controls.email.hasError('required') && form.controls.email.touched) {
+        <span>Email obrigatório.</span>
+      }
+      @if (form.controls.email.hasError('email') && form.controls.email.touched) {
+        <span>Email inválido.</span>
+      }
+    </label>
+
+    <label>
+      Senha
+      <input type="password" formControlName="senha" />
+      @if (form.controls.senha.hasError('required') && form.controls.senha.touched) {
+        <span>Senha obrigatória.</span>
+      }
+      @if (form.controls.senha.hasError('minlength') && form.controls.senha.touched) {
+        <span>Senha deve ter no mínimo 6 caracteres.</span>
+      }
+    </label>
+
+    <label>
+      Perfil
+      <select formControlName="perfil">
+        <option value="admin">Admin</option>
+        <option value="aluno">Aluno</option>
+      </select>
+      @if (form.controls.perfil.invalid && form.controls.perfil.touched) {
+        <span>Perfil obrigatório.</span>
+      }
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" formControlName="ativo" />
+      Usuário ativo
+    </label>
+
+    <div class="actions">
+      <button class="button" type="submit" [disabled]="salvando || carregando">
+        {{ salvando ? 'Salvando...' : 'Salvar' }}
+      </button>
+      <a class="button secondary" routerLink="/usuarios">Cancelar</a>
+    </div>
+  </form>
+</section>

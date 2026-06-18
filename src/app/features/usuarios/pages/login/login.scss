@@ -1,0 +1,43 @@
+.login {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: #475569;
+  font-weight: 700;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+span,
+.alert {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.alert {
+  padding: 14px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fef2f2;
+}
+
+.hint {
+  margin: 18px 0 0;
+  color: #64748b;
+  font-weight: 700;
+}

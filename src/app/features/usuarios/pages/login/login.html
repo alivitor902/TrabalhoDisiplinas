@@ -1,0 +1,38 @@
+<section class="login panel">
+  <h1 class="page-title">Login</h1>
+  <p class="page-lead">Informe seu email e senha para acessar as áreas privadas.</p>
+
+  @if (erro) {
+    <p class="alert">{{ erro }}</p>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="entrar()" class="form">
+    <label>
+      Email
+      <input type="email" formControlName="email" />
+      @if (form.controls.email.hasError('required') && form.controls.email.touched) {
+        <span>Email obrigatório.</span>
+      }
+      @if (form.controls.email.hasError('email') && form.controls.email.touched) {
+        <span>Email inválido.</span>
+      }
+    </label>
+
+    <label>
+      Senha
+      <input type="password" formControlName="senha" />
+      @if (form.controls.senha.invalid && form.controls.senha.touched) {
+        <span>Senha obrigatória.</span>
+      }
+    </label>
+
+    <div class="actions">
+      <button class="button" type="submit" [disabled]="carregando">
+        {{ carregando ? 'Entrando...' : 'Entrar' }}
+      </button>
+      <a class="button secondary" routerLink="/home">Voltar</a>
+    </div>
+  </form>
+
+  <p class="hint">Usuário inicial: admin@email.com / 123456</p>
+</section>

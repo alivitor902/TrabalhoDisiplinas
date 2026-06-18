@@ -1,0 +1,49 @@
+<section>
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Usuários</h1>
+      <p class="page-lead">Total de usuários: {{ usuarios.length }}</p>
+    </div>
+    <a class="button" routerLink="/usuarios/novo">Novo usuário</a>
+  </div>
+
+  @if (erro) {
+    <p class="alert">{{ erro }}</p>
+  }
+
+  @if (carregando) {
+    <p class="empty-state">Carregando usuários...</p>
+  } @else if (usuarios.length) {
+    <div class="table-wrap panel">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Perfil</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (usuario of usuarios; track usuario.id) {
+            <tr>
+              <td>{{ usuario.nome }}</td>
+              <td>{{ usuario.email }}</td>
+              <td>{{ usuario.perfil }}</td>
+              <td>{{ usuario.ativo ? 'Ativo' : 'Inativo' }}</td>
+              <td>
+                <div class="actions">
+                  <a class="button secondary" [routerLink]="['/usuarios/editar', usuario.id]">Editar</a>
+                  <button class="button danger" type="button" (click)="excluir(usuario)">Excluir</button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <p class="empty-state">Nenhum usuário cadastrado.</p>
+  }
+</section>
