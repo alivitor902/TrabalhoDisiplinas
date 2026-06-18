@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Disciplina } from '../../../disciplinas/models/disciplina.model';
 import { DisciplinaService } from '../../../disciplinas/services/disciplina.service';
@@ -14,7 +14,10 @@ export class GradeInteresseLista implements OnInit {
   carregando = false;
   erro = '';
 
-  constructor(private readonly disciplinaService: DisciplinaService) {}
+  constructor(
+    private readonly disciplinaService: DisciplinaService,
+    private readonly cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.carregarGrade();
@@ -27,6 +30,7 @@ export class GradeInteresseLista implements OnInit {
       await this.carregarGrade();
     } catch (error) {
       this.erro = this.obterMensagemErro(error, 'Erro ao atualizar grade de interesse.');
+      this.cdr.detectChanges();
     }
   }
 
@@ -40,6 +44,7 @@ export class GradeInteresseLista implements OnInit {
       this.disciplinas = [];
     } finally {
       this.carregando = false;
+      this.cdr.detectChanges();
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { DisciplinaCard } from '../../components/disciplina-card/disciplina-card';
@@ -19,7 +19,10 @@ export class DisciplinaLista implements OnInit {
   carregando = false;
   erro = '';
 
-  constructor(private readonly disciplinaService: DisciplinaService) {}
+  constructor(
+    private readonly disciplinaService: DisciplinaService,
+    private readonly cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.carregarDisciplinas();
@@ -61,6 +64,7 @@ export class DisciplinaLista implements OnInit {
       await this.carregarDisciplinas();
     } catch (error) {
       this.erro = this.obterMensagemErro(error, 'Erro ao atualizar grade de interesse.');
+      this.cdr.detectChanges();
     }
   }
 
@@ -71,6 +75,7 @@ export class DisciplinaLista implements OnInit {
       await this.carregarDisciplinas();
     } catch (error) {
       this.erro = this.obterMensagemErro(error, 'Erro ao atualizar grade de interesse.');
+      this.cdr.detectChanges();
     }
   }
 
@@ -84,6 +89,7 @@ export class DisciplinaLista implements OnInit {
         await this.carregarDisciplinas();
       } catch (error) {
         this.erro = this.obterMensagemErro(error, 'Erro ao excluir disciplina.');
+        this.cdr.detectChanges();
       }
     }
   }
@@ -104,6 +110,7 @@ export class DisciplinaLista implements OnInit {
       this.disciplinas = [];
     } finally {
       this.carregando = false;
+      this.cdr.detectChanges();
     }
   }
 

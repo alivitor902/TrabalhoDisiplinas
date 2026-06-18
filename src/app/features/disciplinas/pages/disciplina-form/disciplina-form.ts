@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DisciplinaService } from '../../services/disciplina.service';
@@ -14,6 +14,7 @@ export class DisciplinaForm implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly disciplinaService = inject(DisciplinaService);
+  private readonly cdr = inject(ChangeDetectorRef);
   private disciplinaId: string | null = null;
   carregando = false;
   salvando = false;
@@ -57,6 +58,7 @@ export class DisciplinaForm implements OnInit {
       this.erro = this.obterMensagemErro(error, 'Erro ao carregar disciplina.');
     } finally {
       this.carregando = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -95,6 +97,7 @@ export class DisciplinaForm implements OnInit {
       );
     } finally {
       this.salvando = false;
+      this.cdr.detectChanges();
     }
   }
 

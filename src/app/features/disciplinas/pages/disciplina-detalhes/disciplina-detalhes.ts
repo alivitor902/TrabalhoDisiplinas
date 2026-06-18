@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { StatusGradePipe } from '../../../../shared/pipes/status-grade.pipe';
 import { Disciplina } from '../../models/disciplina.model';
@@ -18,7 +18,8 @@ export class DisciplinaDetalhes implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly disciplinaService: DisciplinaService
+    private readonly disciplinaService: DisciplinaService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -42,6 +43,7 @@ export class DisciplinaDetalhes implements OnInit {
       this.erro = this.obterMensagemErro(error, 'Erro ao carregar disciplina.');
     } finally {
       this.carregando = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -62,6 +64,8 @@ export class DisciplinaDetalhes implements OnInit {
       this.disciplina = await this.disciplinaService.buscarPorId(this.disciplina.id);
     } catch (error) {
       this.erro = this.obterMensagemErro(error, 'Erro ao atualizar grade de interesse.');
+    } finally {
+      this.cdr.detectChanges();
     }
   }
 
