@@ -1,59 +1,51 @@
-# CatalogoDisciplinas
+# Catalogo de Disciplinas
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.12.
+## Nome do projeto
 
-## Development server
+Catalogo de Disciplinas
 
-To start a local development server, run:
+## Objetivo da aplicacao
 
-```bash
-ng serve
-```
+Aplicacao web para gerenciar disciplinas de um catalogo academico. O sistema permite cadastrar, listar, editar, excluir, buscar e filtrar disciplinas, alem de visualizar detalhes, montar uma grade de interesse e controlar usuarios com login e protecao de rotas.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Tecnologias utilizadas
 
-## Code scaffolding
+- Angular
+- TypeScript
+- HTML
+- SCSS
+- Reactive Forms
+- Firebase Realtime Database
+- Firebase Hosting
+- Firebase CLI
+- Vitest
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Instrucoes de execucao
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Instale as dependencias:
 
 ```bash
-ng build
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Execute o projeto localmente:
 
 ```bash
-ng test
+npm start
 ```
 
-## Running end-to-end tests
+Acesse no navegador:
 
-For end-to-end (e2e) testing, run:
+```text
+http://localhost:4200
+```
+
+Para gerar a versao de producao:
 
 ```bash
-ng e2e
+npm run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Link da aplicacao online
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+https://trabdisiplinas.web.app
