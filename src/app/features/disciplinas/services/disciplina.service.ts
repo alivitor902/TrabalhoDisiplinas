@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Database } from '@angular/fire/database';
 import { environment } from '../../../../environments/environment';
 import { Disciplina } from '../models/disciplina.model';
 
@@ -11,11 +10,6 @@ export type DisciplinaFormulario = Omit<Disciplina, 'id' | 'adicionadaNaGrade'>;
 export class DisciplinaService {
   private readonly caminho = 'disciplinas';
   private readonly baseUrl = `${environment.firebaseConfig.databaseURL}/${this.caminho}`;
-
-  // Database continua injetado pela configuracao AngularFire da Release 2.
-  constructor(private readonly database: Database) {
-    void this.database;
-  }
 
   async listar(): Promise<Disciplina[]> {
     try {
