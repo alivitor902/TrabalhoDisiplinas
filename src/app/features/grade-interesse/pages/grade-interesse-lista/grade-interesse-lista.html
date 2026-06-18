@@ -7,7 +7,13 @@
     <a class="button" routerLink="/disciplinas">Ver disciplinas</a>
   </div>
 
-  @if (disciplinas.length) {
+  @if (erro) {
+    <p class="alert">{{ erro }}</p>
+  }
+
+  @if (carregando) {
+    <p class="empty-state">Carregando grade de interesse...</p>
+  } @else if (disciplinas.length) {
     <div class="grid">
       @for (disciplina of disciplinas; track disciplina.id) {
         <article class="panel item">

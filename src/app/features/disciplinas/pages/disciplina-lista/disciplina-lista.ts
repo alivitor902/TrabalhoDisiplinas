@@ -16,6 +16,8 @@ export class DisciplinaLista implements OnInit {
   busca = '';
   filtroPeriodo = '';
   filtroCategoria = '';
+  carregando = false;
+  erro = '';
 
   constructor(private readonly disciplinaService: DisciplinaService) {}
 
@@ -52,22 +54,37 @@ export class DisciplinaLista implements OnInit {
     });
   }
 
-  adicionarNaGrade(disciplina: Disciplina): void {
-    this.disciplinaService.adicionarNaGrade(disciplina.id);
-    this.carregarDisciplinas();
+  async adicionarNaGrade(disciplina: Disciplina): Promise<void> {
+    try {
+      this.erro = '';
+      await this.disciplinaService.adicionarNaGrade(disciplina.id);
+      await this.carregarDisciplinas();
+    } catch (error) {
+      this.erro = this.obterMensagemErro(error, 'Erro ao atualizar grade de interesse.');
+    }
   }
 
-  removerDaGrade(disciplina: Disciplina): void {
-    this.disciplinaService.removerDaGrade(disciplina.id);
-    this.carregarDisciplinas();
+  async removerDaGrade(disciplina: Disciplina): Promise<void> {
+    try {
+      this.erro = '';
+      await this.disciplinaService.removerDaGrade(disciplina.id);
+      await this.carregarDisciplinas();
+    } catch (error) {
+      this.erro = this.obterMensagemErro(error, 'Erro ao atualizar grade de interesse.');
+    }
   }
 
-  excluir(disciplina: Disciplina): void {
+  async excluir(disciplina: Disciplina): Promise<void> {
     const confirmar = confirm(`Deseja excluir a disciplina ${disciplina.nome}?`);
 
     if (confirmar) {
-      this.disciplinaService.excluir(disciplina.id);
-      this.carregarDisciplinas();
+      try {
+        this.erro = '';
+        await this.disciplinaService.excluir(disciplina.id);
+        await this.carregarDisciplinas();
+      } catch (error) {
+        this.erro = this.obterMensagemErro(error, 'Erro ao excluir disciplina.');
+      }
     }
   }
 
@@ -77,7 +94,20 @@ export class DisciplinaLista implements OnInit {
     this.filtroCategoria = '';
   }
 
-  private carregarDisciplinas(): void {
-    this.disciplinas = this.disciplinaService.listar();
+  private async carregarDisciplinas(): Promise<void> {
+    try {
+      this.carregando = true;
+      this.erro = '';
+      this.disciplinas = await this.disciplinaService.listar();
+    } catch (error) {
+      this.erro = this.obterMensagemErro(error, 'Erro ao carregar disciplinas.');
+      this.disciplinas = [];
+    } finally {
+      this.carregando = false;
+    }
+  }
+
+  private obterMensagemErro(error: unknown, mensagemPadrao: string): string {
+    return error instanceof Error ? error.message : mensagemPadrao;
   }
 }

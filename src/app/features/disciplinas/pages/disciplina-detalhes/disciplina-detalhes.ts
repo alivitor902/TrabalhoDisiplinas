@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { StatusGradePipe } from '../../../../shared/pipes/status-grade.pipe';
 import { Disciplina } from '../../models/disciplina.model';
 import { DisciplinaService } from '../../services/disciplina.service';
@@ -12,39 +12,60 @@ import { DisciplinaService } from '../../services/disciplina.service';
 })
 export class DisciplinaDetalhes implements OnInit {
   disciplina?: Disciplina;
+  carregando = false;
+  erro = '';
+  naoEncontrada = false;
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly router: Router,
     private readonly disciplinaService: DisciplinaService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (!id) {
-      this.router.navigateByUrl('/disciplinas');
+      this.naoEncontrada = true;
       return;
     }
 
-    this.disciplina = this.disciplinaService.buscarPorId(id);
+    try {
+      this.carregando = true;
+      this.erro = '';
+      this.naoEncontrada = false;
+      this.disciplina = await this.disciplinaService.buscarPorId(id);
 
-    if (!this.disciplina) {
-      this.router.navigateByUrl('/disciplinas');
+      if (!this.disciplina) {
+        this.naoEncontrada = true;
+      }
+    } catch (error) {
+      this.erro = this.obterMensagemErro(error, 'Erro ao carregar disciplina.');
+    } finally {
+      this.carregando = false;
     }
   }
 
-  alternarGrade(): void {
+  async alternarGrade(): Promise<void> {
     if (!this.disciplina) {
       return;
     }
 
-    if (this.disciplina.adicionadaNaGrade) {
-      this.disciplinaService.removerDaGrade(this.disciplina.id);
-    } else {
-      this.disciplinaService.adicionarNaGrade(this.disciplina.id);
-    }
+    try {
+      this.erro = '';
 
-    this.disciplina = this.disciplinaService.buscarPorId(this.disciplina.id);
+      if (this.disciplina.adicionadaNaGrade) {
+        await this.disciplinaService.removerDaGrade(this.disciplina.id);
+      } else {
+        await this.disciplinaService.adicionarNaGrade(this.disciplina.id);
+      }
+
+      this.disciplina = await this.disciplinaService.buscarPorId(this.disciplina.id);
+    } catch (error) {
+      this.erro = this.obterMensagemErro(error, 'Erro ao atualizar grade de interesse.');
+    }
+  }
+
+  private obterMensagemErro(error: unknown, mensagemPadrao: string): string {
+    return error instanceof Error ? error.message : mensagemPadrao;
   }
 }

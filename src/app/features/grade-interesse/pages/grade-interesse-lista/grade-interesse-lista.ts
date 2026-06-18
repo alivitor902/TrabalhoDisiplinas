@@ -11,6 +11,8 @@ import { DisciplinaService } from '../../../disciplinas/services/disciplina.serv
 })
 export class GradeInteresseLista implements OnInit {
   disciplinas: Disciplina[] = [];
+  carregando = false;
+  erro = '';
 
   constructor(private readonly disciplinaService: DisciplinaService) {}
 
@@ -18,12 +20,30 @@ export class GradeInteresseLista implements OnInit {
     this.carregarGrade();
   }
 
-  removerDaGrade(disciplina: Disciplina): void {
-    this.disciplinaService.removerDaGrade(disciplina.id);
-    this.carregarGrade();
+  async removerDaGrade(disciplina: Disciplina): Promise<void> {
+    try {
+      this.erro = '';
+      await this.disciplinaService.removerDaGrade(disciplina.id);
+      await this.carregarGrade();
+    } catch (error) {
+      this.erro = this.obterMensagemErro(error, 'Erro ao atualizar grade de interesse.');
+    }
   }
 
-  private carregarGrade(): void {
-    this.disciplinas = this.disciplinaService.listarGradeInteresse();
+  private async carregarGrade(): Promise<void> {
+    try {
+      this.carregando = true;
+      this.erro = '';
+      this.disciplinas = await this.disciplinaService.listarGradeInteresse();
+    } catch (error) {
+      this.erro = this.obterMensagemErro(error, 'Erro ao carregar disciplinas.');
+      this.disciplinas = [];
+    } finally {
+      this.carregando = false;
+    }
+  }
+
+  private obterMensagemErro(error: unknown, mensagemPadrao: string): string {
+    return error instanceof Error ? error.message : mensagemPadrao;
   }
 }

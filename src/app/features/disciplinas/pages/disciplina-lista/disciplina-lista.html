@@ -41,7 +41,13 @@
     <button class="button secondary" type="button" (click)="limparFiltros()">Limpar filtros</button>
   </form>
 
-  @if (disciplinasFiltradas.length) {
+  @if (erro) {
+    <p class="alert">{{ erro }}</p>
+  }
+
+  @if (carregando) {
+    <p class="empty-state">Carregando disciplinas...</p>
+  } @else if (disciplinasFiltradas.length) {
     <div class="grid">
       @for (disciplina of disciplinasFiltradas; track disciplina.id) {
         <app-disciplina-card

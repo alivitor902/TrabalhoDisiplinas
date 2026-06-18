@@ -1,4 +1,16 @@
-@if (disciplina) {
+@if (erro) {
+  <p class="alert">{{ erro }}</p>
+}
+
+@if (carregando) {
+  <p class="empty-state">Carregando disciplina...</p>
+} @else if (naoEncontrada) {
+  <section class="panel detalhes">
+    <h1 class="page-title">Disciplina não encontrada</h1>
+    <p class="page-lead">Não foi possível encontrar a disciplina solicitada.</p>
+    <a class="button secondary" routerLink="/disciplinas">Voltar</a>
+  </section>
+} @else if (disciplina) {
   <section class="panel detalhes">
     <div class="page-header">
       <div>

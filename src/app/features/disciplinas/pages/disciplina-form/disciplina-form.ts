@@ -15,6 +15,9 @@ export class DisciplinaForm implements OnInit {
   private readonly router = inject(Router);
   private readonly disciplinaService = inject(DisciplinaService);
   private disciplinaId: string | null = null;
+  carregando = false;
+  salvando = false;
+  erro = '';
 
   form = this.fb.nonNullable.group({
     nome: ['', [Validators.required, Validators.minLength(3)]],
@@ -25,28 +28,36 @@ export class DisciplinaForm implements OnInit {
     categoria: ['', [Validators.required]]
   });
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.disciplinaId = this.route.snapshot.paramMap.get('id');
 
     if (!this.disciplinaId) {
       return;
     }
 
-    const disciplina = this.disciplinaService.buscarPorId(this.disciplinaId);
+    try {
+      this.carregando = true;
+      this.erro = '';
+      const disciplina = await this.disciplinaService.buscarPorId(this.disciplinaId);
 
-    if (!disciplina) {
-      this.router.navigateByUrl('/disciplinas');
-      return;
+      if (!disciplina) {
+        this.erro = 'Disciplina não encontrada.';
+        return;
+      }
+
+      this.form.patchValue({
+        nome: disciplina.nome,
+        descricao: disciplina.descricao,
+        cargaHoraria: disciplina.cargaHoraria,
+        professor: disciplina.professor,
+        periodo: disciplina.periodo,
+        categoria: disciplina.categoria
+      });
+    } catch (error) {
+      this.erro = this.obterMensagemErro(error, 'Erro ao carregar disciplina.');
+    } finally {
+      this.carregando = false;
     }
-
-    this.form.patchValue({
-      nome: disciplina.nome,
-      descricao: disciplina.descricao,
-      cargaHoraria: disciplina.cargaHoraria,
-      professor: disciplina.professor,
-      periodo: disciplina.periodo,
-      categoria: disciplina.categoria
-    });
   }
 
   get titulo(): string {
@@ -58,7 +69,7 @@ export class DisciplinaForm implements OnInit {
     return campo.invalid && campo.touched;
   }
 
-  salvar(): void {
+  async salvar(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -66,12 +77,28 @@ export class DisciplinaForm implements OnInit {
 
     const disciplina = this.form.getRawValue();
 
-    if (this.disciplinaId) {
-      this.disciplinaService.editar(this.disciplinaId, disciplina);
-    } else {
-      this.disciplinaService.cadastrar(disciplina);
-    }
+    try {
+      this.salvando = true;
+      this.erro = '';
 
-    this.router.navigateByUrl('/disciplinas');
+      if (this.disciplinaId) {
+        await this.disciplinaService.editar(this.disciplinaId, disciplina);
+      } else {
+        await this.disciplinaService.cadastrar(disciplina);
+      }
+
+      this.router.navigateByUrl('/disciplinas');
+    } catch (error) {
+      this.erro = this.obterMensagemErro(
+        error,
+        this.disciplinaId ? 'Erro ao editar disciplina.' : 'Erro ao cadastrar disciplina.'
+      );
+    } finally {
+      this.salvando = false;
+    }
+  }
+
+  private obterMensagemErro(error: unknown, mensagemPadrao: string): string {
+    return error instanceof Error ? error.message : mensagemPadrao;
   }
 }

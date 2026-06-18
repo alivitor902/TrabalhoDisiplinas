@@ -37,6 +37,15 @@ select {
   gap: 16px;
 }
 
+.alert {
+  padding: 14px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
 @media (max-width: 900px) {
   .filters {
     grid-template-columns: 1fr;
